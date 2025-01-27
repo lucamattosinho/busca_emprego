@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
       periodo: DataTypes.STRING(45),
       salario: DataTypes.FLOAT,
       visualizar: DataTypes.BOOLEAN,
-      EmpresaId: DataTypes.INTEGER
+      EmpresaId: DataTypes.INTEGER,
     },
     {
       sequelize,

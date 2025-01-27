@@ -16,6 +16,19 @@ export const autenticacaoLoginCandidato = async (
   return response;
 };
 
+export const autenticacaoLoginAdmin = async (email: string, senha: string) => {
+    if (email === '' || senha === '') {
+        return;
+    }
+
+    const response = await api.post('usuario/login/admin', {
+        email,
+        senha,
+    });
+
+    return response;
+}
+
 export const autenticacaoLoginEmpresa = async (cnpj: string, senha: string) => {
 
   if (cnpj === '' || senha === '') {

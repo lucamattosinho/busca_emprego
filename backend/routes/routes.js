@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const candidatoControlle = require('../controllers/candidatoController');
+const candidatoController = require('../controllers/candidatoController');
 const empresaController = require('../controllers/empresaController');
 const authCandidato = require('../middleware/authCandidatoController'); //controller de autenticação de candidato
 const authEmpresa = require('../middleware/authEmpresaController'); //controller de autenticação de empresa
@@ -10,11 +10,12 @@ const vagaController = require('../controllers/vagaController');
 
 //rota de cadastro
 router.post('/cadastro/empresas', empresaController.cadastroEmpresa);
-router.post('/cadastro/candidatos', candidatoControlle.cadastroCandidato);
+router.post('/cadastro/candidatos', candidatoController.cadastroCandidato);
 
 //rota de login
-router.post('/login/candidato', candidatoControlle.loginCandidato);
+router.post('/login/candidato', candidatoController.loginCandidato);
 router.post('/login/empresa', empresaController.loginEmpresa);
+router.post('/login/admin', candidatoController.loginAdmin);
 
 //router.use(authCandidato);
 //router.use(authEmpresa);
@@ -29,18 +30,21 @@ router.post('/candidatar', authCandidato, curriculoController.candidatar);
 
 //rota de funcionalidades candidato:
 //lista todas as vagas que tem no site para o candidato
-router.get('/candidato/vagas', authCandidato, candidatoControlle.listarVagas);
+router.get('/candidato/vagas', authCandidato, candidatoController.listarVagas);
+
+router.get('/candidato/candidaturas', authCandidato, candidatoController.listarCandidaturas);
+
 //lista todas as vagas que tem no site para o candidato
 router.post(
   '/candidato/vagas/search',
   authCandidato,
-  candidatoControlle.listarVagasSearch
+  candidatoController.listarVagasSearch
 );
 //pega uma vaga especifica da listagem de vagas para o candidato
 router.get(
   '/candidato/vagas/:id',
   authCandidato,
-  candidatoControlle.exibirDadosVaga
+  candidatoController.exibirDadosVaga
 );
 
 //pega listar todas as vagas que o currículo se candidatou
@@ -80,6 +84,7 @@ router.put(
   authEmpresa,
   vagaController.toggleVaga
 );
+
 //rota que exibe dados de uma vaga (essa rota servirá para a alteração da vaga e somente ela)
 router.get(
   '/empresa/exibir/vaga/:idVaga',
@@ -92,6 +97,13 @@ router.put(
   authEmpresa,
   curriculoController.atualizarStatusVaga
 );
+
+//rota de funcionalidades admin
+router.get('/admin/empresas', vagaController.listarVagasAdmin);
+router.get('/admin/curriculos', curriculoController.listarTodosCurriculos);
+router.post('/admin/curriculos/search', authCandidato, curriculoController.listarCurriculosSearch);
+
+router.put('/admin/curriculos/:idCurriculo', authCandidato, curriculoController.toggleCurriculo);
 
 
 module.exports = router;

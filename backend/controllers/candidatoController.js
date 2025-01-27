@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const candidato = models.Curriculo;
 const empresa = models.Empresa;
 const vaga = models.Vaga;
+const candidatura = models.CurriculosVagas;
 
 const candidatoController = {
   cadastroCandidato: async (req, res) => {
@@ -22,6 +23,31 @@ const candidatoController = {
           message: 'Falha na criação do(a) candidato(a).',
         });
       });
+  },
+
+  loginAdmin: async (req, res) => {
+    const admin = models.Administradores;
+
+    let usuario = await admin.findOne({
+      where: {
+        email: req.body.email,
+        senha: req.body.senha,
+      },
+    });
+
+    if (!usuario)
+      return res.json({ erro: true, mensagem: 'Email ou senha inválido' });
+
+    const token = jwt.sign(
+        { _id: usuario._id, _cpf: usuario._cpf },
+        `${process.env.SECRET}`
+    );
+
+    res.json({
+      id: usuario.id,
+      nome: usuario.nome,
+      token: token,
+    });
   },
 
   loginCandidato: async (req, res) => {
@@ -126,6 +152,27 @@ const candidatoController = {
         });
       });
   },
+
+  listarCandidaturas: async (req, res) => {
+    await candidato
+        .findAll({
+          where: { id: req.body.id },
+          include: [
+            {
+              model: candidatura,
+              required: true,
+              include: [
+                {
+                  model: vaga,
+                  required: true,
+                  attributes: ['titulo', 'descricao'],
+                },
+              ],
+            },
+          ],
+        })
+  }
+
 };
 
 module.exports = candidatoController;

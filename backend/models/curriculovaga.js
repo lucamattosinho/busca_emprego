@@ -20,6 +20,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DATE,
         defaultValue: DataTypes.NOW, 
         allowNull: false,
+      },
+      indicacao: {
+          type: DataTypes.BOOLEAN,
+          defaultValue: false,
+          allowNull: false
       }
     },
     {

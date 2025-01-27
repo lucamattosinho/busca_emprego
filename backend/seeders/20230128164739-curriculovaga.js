@@ -12,7 +12,8 @@ module.exports = {
           status: 'Em análise',
           dataAtualizacao: new Date(),
           createdAt: new Date(),
-          updatedAt: new Date()
+          updatedAt: new Date(),
+          indicacao: true
         },
         {
           VagaId: 1,
@@ -20,7 +21,8 @@ module.exports = {
           status: 'Em análise',
           dataAtualizacao: new Date(),
           createdAt: new Date(),
-          updatedAt: new Date()
+          updatedAt: new Date(),
+          indicacao: false
         },
         {
           VagaId: 2,
@@ -28,7 +30,8 @@ module.exports = {
           status: 'Em análise',
           dataAtualizacao: new Date(),
           createdAt: new Date(),
-          updatedAt: new Date()
+          updatedAt: new Date(),
+          indicacao: true
         },
         {
           VagaId: 2,
@@ -36,7 +39,8 @@ module.exports = {
           status: 'Em análise',
           dataAtualizacao: new Date(),
           createdAt: new Date(),
-          updatedAt: new Date()
+          updatedAt: new Date(),
+          indicacao: false
         }
       ],
       {}

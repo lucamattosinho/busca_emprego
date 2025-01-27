@@ -9,19 +9,22 @@ interface CartaoProps {
         nome: string
         areaAtuacao: string
         descricao: string
+        indicado: boolean
     }[],
     idVaga?: string
 }
 
 export function ListarCurriculos(props: CartaoProps) {
     const { listagem, idVaga } = props
-    
+
     const navigate = useNavigate()
+
+    const curriculosOrdenados = [...listagem].sort((a, b) => (b.indicado ? 1 : 0) - (a.indicado ? 1 : 0))
 
 
     return (
         <Box>
-            {listagem.map(element => (
+            {curriculosOrdenados.map(element => (
                 <Box
                     key={element.id}
                     marginX="auto"
@@ -85,6 +88,11 @@ export function ListarCurriculos(props: CartaoProps) {
                             alignItems="center"
                             border-width="2px"
                         >
+                            {element.indicado && (
+                                <Typography fontSize="0.875rem" fontWeight="bold" color="#5E80BB">
+                                    Este currículo foi indicado para a vaga!
+                                </Typography>
+                            )}
                             <ButtonBase
                                 sx={{
                                     backgroundColor: '#5E80BB',

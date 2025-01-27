@@ -26,7 +26,8 @@ module.exports = {
         descricao: 'Sla mano',
         areaAtuacao: 'Programador Jr',
         createdAt: new Date(),
-        updatedAt: new Date()
+        updatedAt: new Date(),
+        visualizar: true
       },
       {
         id: 2,
@@ -50,7 +51,8 @@ module.exports = {
         descricao: 'Sla mano',
         areaAtuacao: 'teste, qualquer coisa',
         createdAt: new Date(),
-        updatedAt: new Date()
+        updatedAt: new Date(),
+        visualizar: true
       }
     ])
   },

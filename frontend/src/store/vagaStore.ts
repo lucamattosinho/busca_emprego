@@ -8,7 +8,9 @@ import {
   listarVagasCandidatoSearch,
   listarVagasEmpresa,
   toggleVaga,
-  atualizarStatusVaga
+  atualizarStatusVaga,
+  listarVagasAdminSearch,
+  listarVagasAdmin
 } from "../service/vagas";
 
 export interface VagaStoreType {
@@ -258,6 +260,11 @@ export class VagaStore implements VagaStoreType{
 
   handleSearchVagas = async (token: string, empresa: string, titulo: string, descricao: string) => {
     const response = await listarVagasCandidatoSearch(token, empresa, titulo, descricao)
+    return response
+  }
+
+  handleSearchVagasAdmin = async (token: string, empresa: string, titulo: string, descricao: string) => {
+    const response = await listarVagasAdminSearch(token, empresa, titulo, descricao)
     return response
   }
 

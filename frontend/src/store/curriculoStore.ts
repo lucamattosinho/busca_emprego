@@ -1,8 +1,19 @@
 import { makeAutoObservable, toJS } from 'mobx';
 import { ItensList } from '../types/curriculo';
-import { createCurriculo } from '../service';
+import {createCurriculo, getCurriculo, listarCurriculosSearch} from '../service';
 import { SnackbarStore } from './snackbar';
 export interface CurriculoStoreType {
+  id: string;
+  setId: (id: string) => void | React.Dispatch<React.SetStateAction<string>>;
+
+  nome: string;
+  setNome: (nome: string) => void | React.Dispatch<React.SetStateAction<string>>;
+
+  perfil: string;
+  setPerfil: (
+      perfil: string
+  ) => void | React.Dispatch<React.SetStateAction<string>>;
+
   nomeEmpresa: string;
   setNomeEmpresa: (
     nomeEmpresa: string
@@ -27,6 +38,12 @@ export interface CurriculoStoreType {
   experiencias: Array<ItensList>;
   setExperiencias: (experiencias: Array<ItensList>) => void;
 
+  visibilidade: number;
+  setVisibilidade: (visibilidade: number) => void | React.Dispatch<React.SetStateAction<number>>;
+
+  curriculos: Array<ItensList2>;
+  setCurriculos: (curriculos: Array<ItensList2>) => void;
+
   clearStatesCurriculo: () => void;
   handleSaveExperience: () => void;
   createExperience: () => void;
@@ -40,9 +57,31 @@ export interface CurriculoStoreType {
   ) => void;
 }
 
+export type ItensList2 = {
+  id: string,
+  perfil: string,
+  nome: string,
+  nomeEmpresa: string,
+  visibilidade: number,
+}
+
 export class CurriculoStore implements CurriculoStoreType {
   constructor() {
     makeAutoObservable(this, {}, { autoBind: true });
+  }
+  id: string = '';
+  setId(id: string) {
+      this.id = id;
+  }
+
+  nome: string = '';
+  setNome(nome: string) {
+      this.nome = nome;
+  }
+
+  perfil: string = '';
+  setPerfil(perfil: string) {
+      this.perfil = perfil;
   }
 
   nomeEmpresa: string = '';
@@ -73,6 +112,24 @@ export class CurriculoStore implements CurriculoStoreType {
   loading: boolean = false;
   setLoading(loading: boolean) {
     this.loading = loading;
+  }
+
+  visibilidade: number = 0;
+  setVisibilidade(visibilidade: number) {
+      this.visibilidade = visibilidade;
+  }
+
+  curriculo: ItensList2 = {
+    id: '',
+    perfil: '',
+    nome: '',
+    nomeEmpresa: '',
+    visibilidade: 0,
+  }
+
+  curriculos: Array<ItensList2> = [];
+  setCurriculos(curriculos: Array<ItensList2>) {
+      this.curriculos = curriculos;
   }
 
   clearStatesCurriculo = () => {
@@ -126,6 +183,11 @@ export class CurriculoStore implements CurriculoStoreType {
       });
 
     return experiencias;
+  }
+
+  handleSearchCurriculos = async (token: string, id: string) => {
+    const response = await listarCurriculosSearch(id, token);
+    return response;
   }
 
   async handleCreateCurriculo(

@@ -13,12 +13,12 @@ import {
 } from '@mui/material';
 
 import {
-  Dashboard,
-  PermContactCalendar,
-  ListAlt,
-  ChevronLeft,
-  ChevronRight,
-  Logout,
+    Dashboard,
+    PermContactCalendar,
+    ListAlt,
+    ChevronLeft,
+    ChevronRight,
+    Logout, Tablet, TableBar, Contacts,
 } from '@mui/icons-material';
 
 import * as Styled from './styles';
@@ -51,6 +51,21 @@ const candidatoScreens = (idCandidato: string | undefined) => [
     name: 'Cadastrar currículo',
     navigateTo: `/candidato/${idCandidato}/curriculo`,
   },
+    {
+        name: 'Minhas candidaturas',
+        navigateTo: '/candidato/candidaturas',
+    }
+];
+
+const adminScreens  = [
+    {
+        name: 'Currículos',
+        navigateTo: '/admin/curriculos',
+    },
+    {
+        name: 'Empresas',
+        navigateTo: '/admin/empresas',
+    },
 ];
 
 const empresaIcons = (screen: string) => {
@@ -72,10 +87,23 @@ const candidatoIcons = (screen: string) => {
       return <Dashboard />;
     case 'Cadastrar currículo':
       return <PermContactCalendar />;
+    case 'Minhas candidaturas':
+      return <TableBar />;
     default:
       break;
   }
 };
+
+const adminIcons = (screen: string) => {
+    switch (screen) {
+        case 'Empresas':
+        return <Contacts />;
+        case 'Currículos':
+        return <Dashboard />;
+        default:
+        break;
+    }
+}
 
 const MiniDrawer = observer(({ typeUser, navigate }: SideBarProps) => {
   const [open, setOpen] = React.useState(false);
@@ -83,7 +111,9 @@ const MiniDrawer = observer(({ typeUser, navigate }: SideBarProps) => {
   const screens =
     typeUser === 'empresa'
       ? empresaScreens(loginStore.user.id)
-      : candidatoScreens(loginStore.user.id);
+        : typeUser === 'admin'
+        ? adminScreens
+        : candidatoScreens(loginStore.user.id);
 
   const handleDrawerOpen = (open: boolean) => {
     setOpen(!open);
@@ -133,6 +163,8 @@ const MiniDrawer = observer(({ typeUser, navigate }: SideBarProps) => {
                 >
                   {typeUser === 'empresa'
                     ? empresaIcons(item.name)
+                    : typeUser === 'admin'
+                    ? adminIcons(item.name)
                     : candidatoIcons(item.name)}
                 </ListItemIcon>
                 <ListItemText

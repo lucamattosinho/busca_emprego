@@ -5,12 +5,14 @@ export async function candidatar(
   idCandidato: string,
   token: string,
   idVaga?: string,
+  indicado?: boolean
 ) {
   const response = await api.post(
     `/usuario/candidatar`,
     {
       idVaga,
       idCandidato,
+      indicado,
     },
     {
       headers: {
@@ -166,6 +168,40 @@ export const listarVagasCandidato = async (token: string) => {
 
   return response.data.vagas;
 };
+
+export const listarVagasAdmin = async (token: string) => {
+    const response = await api.get('usuario/admin/empresas', {
+        headers: {
+            'authorization-token': token,
+        },
+    });
+
+    return response.data.vagas;
+};
+
+export const listarVagasAdminSearch = async (
+    token: string,
+    empresa: string,
+    titulo: string,
+    descricao: string
+    ) => {
+    const response = await api.post(
+        'usuario/admin/empresas/search',
+        {
+        token,
+        empresa,
+        titulo,
+        descricao,
+        },
+        {
+        headers: {
+            'authorization-token': token,
+        },
+        }
+    );
+
+    return response.data.vagas;
+    }
 
 export const listarVagasCandidatoSearch = async (
   token: string,

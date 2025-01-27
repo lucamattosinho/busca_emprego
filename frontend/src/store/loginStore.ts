@@ -2,6 +2,7 @@ import { makeAutoObservable } from 'mobx';
 import {
   autenticacaoLoginCandidato,
   autenticacaoLoginEmpresa,
+  autenticacaoLoginAdmin,
 } from '../service/login';
 import { makePersistable, getPersistedStore } from 'mobx-persist-store';
 export interface LoginStoreType {
@@ -88,6 +89,20 @@ export class LoginStore implements LoginStoreType {
       this.setToken(response?.data.token);
       this.setTypeUser('candidato');
       return { ok: true };
+    }
+  };
+
+  authAdmin = async () => {
+    const response = await autenticacaoLoginAdmin(this.email, this.senha);
+
+    if (response?.data.erro) {
+      this.setError(response.data.mensagem);
+      return {ok: false};
+    } else {
+      this.setUser(response?.data.nome, response?.data.id);
+      this.setToken(response?.data.token);
+      this.setTypeUser('admin');
+      return {ok: true};
     }
   };
 

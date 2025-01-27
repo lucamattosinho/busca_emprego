@@ -103,6 +103,58 @@ const vagaController = {
       })
   },
 
+  listarVagasAdmin: async (req, res) => {
+    await vaga
+      .findAll({
+        include: [
+          {
+            model: empresa,
+            required: true,
+            attributes: ['nome', 'logo']
+          }
+        ]
+      })
+      .then(vagas => res.json({ vagas }))
+      .catch(erro => {
+        return res.status(400).json({
+          error: true,
+          message: erro
+        })
+      })
+  },
+
+  listarVagasSearchAdmin: async (req, res) => {
+    const Sequelize = require('sequelize')
+    const { Op } = Sequelize
+
+    const queryTitulo = `%${req.body.titulo}%`
+    const queryDescricao = `%${req.body.descricao}%`
+    const queryEmpresa = `%${req.body.empresa}%`
+
+    await vaga
+      .findAll({
+        where: {
+          titulo: { [Op.like]: queryTitulo },
+          descricao: { [Op.like]: queryDescricao },
+          '$empresa.nome$': { [Op.like]: queryEmpresa }
+        },
+        include: [
+          {
+            model: empresa,
+            required: true,
+            attributes: ['nome', 'logo']
+          }
+        ]
+      })
+      .then(vagas => res.json({ vagas }))
+      .catch(erro => {
+        return res.status(400).json({
+          error: true,
+          message: erro
+        })
+      })
+  },
+
   exibirDadosVaga: async (req, res) => {
     await vaga
       .findOne({

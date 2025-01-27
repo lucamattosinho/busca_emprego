@@ -1,5 +1,5 @@
-import { Box, ButtonBase, Typography, Snackbar, Alert } from '@mui/material';
-import { useEffect } from 'react';
+import {Box, ButtonBase, Typography, Snackbar, Alert, FormControlLabel, Checkbox} from '@mui/material';
+import {useEffect, useState} from 'react';
 import { useParams } from 'react-router-dom';
 import { candidatar } from '../../../service/vagas';
 import empresaIcon from '../../../assets/icons/empresaIcon.svg';
@@ -10,6 +10,7 @@ export const ExibirVaga = observer(() => {
   const { id } = useParams();
   const { loginStore, snackbarStore, vagaStore } = useStore();
   const { vaga, setVaga } = vagaStore;
+  const [indicado, setIndicado] = useState(false);
 
   const handleVagas = async () => {
     if (id !== undefined) {
@@ -23,6 +24,7 @@ export const ExibirVaga = observer(() => {
       loginStore.user.id,
       loginStore.token,
       id,
+      indicado
     );
 
     snackbarStore.setOpenSnackbar(true);
@@ -108,6 +110,24 @@ export const ExibirVaga = observer(() => {
                   ? 'R$ ' + vaga.salario?.toString().replace('.', ',')
                   : 'Faixa de salário indisponível'}
               </Typography>
+            </Box>
+              <Box
+                  display="flex"
+                  flexDirection="row"
+                  alignItems="center"
+                  justifyContent={'space-between'}
+                  padding="1rem"
+              >
+              <FormControlLabel
+                  control={
+                      <Checkbox
+                          checked={indicado}
+                          onChange={(e) => setIndicado(e.target.checked)}
+                          color="primary"
+                      />
+                  }
+                  label="Fui indicado para esta vaga"
+              />
               <ButtonBase
                 onClick={handleCandidatar}
                 sx={{
@@ -118,7 +138,7 @@ export const ExibirVaga = observer(() => {
                   borderRadius: '0.25rem',
                   fontSize: '0.875rem',
                   display: 'flex',
-                  alignItems: 'center',
+                  alignItems: 'right',
                   ':hover': {
                     backgroundColor: '#4766AC',
                   },

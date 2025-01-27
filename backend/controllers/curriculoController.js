@@ -72,6 +72,7 @@ const curriculo = {
             required: true,
           },
         ],
+        order: [['indicacao', 'DESC']],
       })
       .then((curriculos) => res.json({ curriculos }))
       .catch((erro) => {
@@ -80,6 +81,50 @@ const curriculo = {
           message: erro,
         });
       });
+  },
+
+  listarTodosCurriculos: async (req, res) => {
+    const curriculo = models.Curriculo;
+
+    await curriculo
+      .findAll()
+      .then((curriculos) => res.json({ curriculos }))
+      .catch((erro) => {
+        return res.status(400).json({
+          error: true,
+          message: erro,
+        });
+      });
+  },
+
+  listarCurriculosSearch: async (req, res) => {
+    const Sequelize = require('sequelize');
+    const Op = Sequelize.Op;
+
+    const queryId = `%${req.body.id}%`;
+
+    const curriculo = models.Curriculo;
+
+    await curriculo
+        .findAll({
+            where: {
+                id: { [Op.like]: queryId },
+            },
+            include: [
+                {
+                    model: curriculo,
+                    required: true,
+                },
+            ],
+            })
+        .then((curriculos) => res.json({ curriculos }))
+        .catch((erro) => {
+            return res.status(400).json({
+            error: true,
+            message: erro,
+            });
+        });
+
   },
 
   listarVagas: async (req, res) => {
@@ -175,7 +220,7 @@ const curriculo = {
   },
 
   candidatar: async (req, res) => {
-    const { idVaga, idCandidato } = req.body;
+    const { idVaga, idCandidato, indicado } = req.body;
 
     let vagaExists = await vaga.findOne({
       where: {
@@ -215,6 +260,7 @@ const curriculo = {
       const response = await curriculoVaga.create({
         VagaId: idVaga,
         CurriculoId: idCandidato,
+        indicacao: indicado
       });
 
       res.json({ ok: true, data: 'Parabéns! Você se candidatou à vaga' });
@@ -271,7 +317,37 @@ const curriculo = {
       return res.status(500).json({ error: 'Erro ao atualizar o status do processo seletivo' });
     }
 
+  },
+
+  toggleCurriculo: async (req, res) => {
+    const {idCurriculo} = req.params;
+    const newVisualizar = req.body.visualizar === true ? 0 : 1;
+    const curriculos = models.Curriculo;
+    console.log('newVisualizar', newVisualizar);
+    await curriculos.update(
+        {visualizar: req.body.visualizar},
+        {
+          where: {
+            idCurriculo: idCurriculo,
+          },
+        }
+    )
+        .then(() => {
+          return res.json({
+            error: false,
+            message: 'Visibilidade do currículo atualizada com sucesso!',
+            newVisualizar: newVisualizar,
+          });
+        })
+        .catch((error) => {
+          return res.status(400).json({
+            error: true,
+            message: 'Ops... houve um erro :(',
+          })
+        })
   }
+
 };
+
 
 module.exports = curriculo;

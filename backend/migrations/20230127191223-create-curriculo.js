@@ -94,6 +94,11 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
+      },
+      visualizar: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: true,
+        allowNull: false
       }
     })
   },

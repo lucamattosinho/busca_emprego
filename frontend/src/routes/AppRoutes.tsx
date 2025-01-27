@@ -12,6 +12,8 @@ import {
 import { AlterarVaga } from '../screens/Vagas/AlteraçãoVaga';
 import { ExibirVaga } from '../screens/Vagas/ExibirVaga';
 import { ListagemVagasEmpresa } from '../screens/Vagas/ListagemVagasEmpresa';
+import {ListagemEmpresasAdmin} from "../screens/Admin/ListagemEmpresasAdmin";
+import {ListagemCurriculosAdmin} from "../screens/Admin/ListagemCurriculosAdmin";
 
 export function AppRoutes() {
   const { loginStore } = useStore();
@@ -28,6 +30,8 @@ export function AppRoutes() {
         <Route path="empresa/vagas/:id" element={<ListagemVagasEmpresa />} />
         <Route path="empresa/cadastro/vaga" element={<CadastroVaga />} />
         <Route path="empresa/alterar/vaga/:id" element={<AlterarVaga />} />
+        <Route path="admin/empresas" element={<ListagemEmpresasAdmin />} />
+        <Route path="admin/curriculos" element={<ListagemCurriculosAdmin />} />
       </Routes>
     </>
   );

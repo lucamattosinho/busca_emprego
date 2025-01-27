@@ -14,7 +14,7 @@ type SuccessMessage =
   | 'Ocorreu um erro ao copiar o email';
 type ErrorMessage = 'Ops, algo deu errado :(';
 
-export interface SnackbarStoreType {
+export interface  SnackbarStoreType {
   openSnackbar: boolean;
   setOpenSnackbar: (
     openSnackbar: boolean

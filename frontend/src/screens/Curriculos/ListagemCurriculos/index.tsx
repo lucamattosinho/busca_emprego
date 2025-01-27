@@ -20,6 +20,7 @@ export function ListagemCurriculos() {
       nome: string;
       areaAtuacao: string;
       descricao: string;
+      indicado: boolean;
     }[]
   >([]);
 

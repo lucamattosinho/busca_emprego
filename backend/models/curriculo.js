@@ -40,7 +40,8 @@ module.exports = (sequelize, DataTypes) => {
       cep: DataTypes.CHAR(8),
       pretensao: DataTypes.FLOAT,
       descricao: DataTypes.TEXT,
-      areaAtuacao: DataTypes.STRING(80)
+      areaAtuacao: DataTypes.STRING(80),
+      visualizar: DataTypes.BOOLEAN
     },
     {
       sequelize,

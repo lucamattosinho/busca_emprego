@@ -15,11 +15,17 @@ export const LoginCandidato = observer(() => {
   const handleLogin = async () => {
     loginStore.setLoading(true);
     await delay(1000);
-
-    const response = await loginStore.authCandidato();
+    let response = await loginStore.authCandidato();
+    if (!response.ok) {
+      response = await loginStore.authAdmin();
+    }
     if (response.ok) {
       loginStore.getPersistedStore();
-      navigate('/candidato/vagas');
+      if (loginStore.typeUser === 'admin') {
+        navigate('/admin/empresas');
+      } else {
+        navigate('/candidato/vagas');
+      }
     }
     loginStore.setLoading(false);
   };
